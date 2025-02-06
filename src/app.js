@@ -1,7 +1,11 @@
+// const TruffleContract = require('truffle-contract');
+
 App = {
+    contracts: {},
     load: async () => {
         await App.loadWeb3();
         await App.loadAccount();
+        await App.loadContract();
     },
 
     loadWeb3: async () => {
@@ -25,6 +29,13 @@ App = {
         const accounts = await web3.eth.getAccounts();
         App.account = accounts[0];
         console.log("Account:", App.account);
+    },
+
+    loadContract: async () => {
+        const todoList = await $.getJSON('TodoList.json');
+        App.contracts.TodoList = TruffleContract(todoList);
+        App.contracts.TodoList.setProvider(App.web3Provider);
+        console.log("Contract:", todoList);
     }
 };
 
